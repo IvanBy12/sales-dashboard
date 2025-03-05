@@ -1,12 +1,14 @@
 import { useState } from "react";
 import axios from "axios";
-import backgroundImage from "../assets/fondo.jpg";
+import { useNavigate } from "react-router-dom";
+
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate(); // 👈 Hook para redirigir
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault(); // Evita que la página se recargue
@@ -19,6 +21,7 @@ export default function Login() {
       const { data } = await axios.post("http://localhost:5000/api/login", { email, password });
       console.log("Respuesta del servidor:", data);
       localStorage.setItem("token", data.token);
+      navigate("/dashboard");
       alert("Inicio de sesión exitoso");
     } catch (err: any) {
       setError(err.response?.data?.message || "Error al iniciar sesión");

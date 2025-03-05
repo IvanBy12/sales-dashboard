@@ -7,16 +7,21 @@ const router = express.Router();
 
 // 📌 Ruta para registrar usuarios 
 router.post("/register", async (req, res) => {
-  const { email, password } = req.body;
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const { nombre, descripcion, precio, imagen } = req.body;
 
-  db.query("INSERT INTO users (email, password) VALUES (?, ?)", [email, hashedPassword], (err, result) => {
-    if (err) {
-      return res.status(500).json({ message: "Error en el servidor", error: err });
-    }
-    res.status(201).json({ message: "Usuario registrado correctamente" });
+  if (!nombre || !descripcion || !precio || !imagen) {
+      return res.status(400).json({ message: "Todos los campos son obligatorios" });
+  }
+
+  const query = "INSERT INTO productos (nombre, descripcion, precio, imagen) VALUES (?, ?, ?, ?)";
+  db.query(query, [nombre, descripcion, precio, imagen], (err, result) => {
+      if (err) {
+          return res.status(500).json({ message: "Error en la base de datos", error: err });
+      }
+      res.status(201).json({ message: "Producto agregado", id: result.insertId });
   });
 });
+
 
 // 📌 Ruta para iniciar sesión
 router.post("/login", (req, res) => {
