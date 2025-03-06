@@ -1,5 +1,8 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const cors = require("cors");
+app.use(cors());
+
 
 const users = [{ email: "admin@test.com", password: bcrypt.hashSync("123456", 10) }];
 

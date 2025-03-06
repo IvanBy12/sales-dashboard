@@ -1,14 +1,15 @@
-require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-
+const productRoutes = require("./routes/productos");
+const authRoutes = require("./routes/auth");
 const app = express();
 app.use(cors());
+
+
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("API correct");
-});
+// Importar rutas de autenticación
+app.use("/api", authRoutes);
+app.use("/api/productos", productRoutes);
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Servidor en http://localhost:${PORT}`));
+app.listen(5000, () => console.log("🔥 Servidor corriendo en http://localhost:5000"));
