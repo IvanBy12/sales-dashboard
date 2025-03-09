@@ -20,4 +20,26 @@ router.post("/", (req, res) => {
     });
 });
 
+
+
+// Eliminar una venta 
+router.delete("/:id", (req, res) => {
+    const id = parseInt(req.params.id, 10);
+    console.log("ID recibido para eliminar:", id);
+
+    if (isNaN(id)) {
+        return res.status(400).json({ error: "ID inválido" });
+    }
+
+    db.query("DELETE FROM ventas WHERE id=?", [id], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+
+        if (result.affectedRows === 0) {
+            console.log("No se encontró una venta con el ID:", id);
+            return res.status(404).json({ error: "Venta no encontrada" });
+        }
+
+        res.json({ message: "Venta eliminada" });
+    });
+});
 module.exports = router;

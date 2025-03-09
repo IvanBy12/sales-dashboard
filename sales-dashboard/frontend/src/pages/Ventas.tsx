@@ -46,6 +46,8 @@ export default function Ventas() {
     }
   };
 
+  
+
   const handleVenta = async () => {
     if (!productoId || !cantidad) {
       setError("Por favor complete todos los campos");
@@ -83,14 +85,16 @@ export default function Ventas() {
   };
 
   const handleDeleteVenta = async (id: number) => {
-    try {
-      setIsDeletingId(id);
-      await axios.delete(`http://localhost:5000/api/ventas/${id}`);
-      setVentas(ventas.filter(venta => venta.id !== id));
-      setIsDeletingId(null);
-    } catch (err) {
-      setError("Error al eliminar la venta");
-      setIsDeletingId(null);
+    console.log("Intentando eliminar venta con ID:", id); // 🆕 Verificar que se está llamando
+  try {
+    setIsDeletingId(id);
+    await axios.delete(`http://localhost:5000/api/ventas/${id}`);
+    setVentas(ventas.filter((venta) => venta.id !== id));
+    setIsDeletingId(null);
+  } catch (err) {
+    console.error("Error al eliminar la venta:", err);
+    setError("Error al eliminar la venta");
+    setIsDeletingId(null);
     }
   };
 
